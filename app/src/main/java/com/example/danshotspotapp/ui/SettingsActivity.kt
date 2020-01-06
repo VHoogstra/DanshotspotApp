@@ -1,9 +1,10 @@
-package com.example.danshotspotapp
+package com.example.danshotspotapp.ui
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import com.example.danshotspotapp.R
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -12,7 +13,10 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.settings_activity)
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.settings, SettingsFragment())
+            .replace(
+                R.id.settings,
+                SettingsFragment()
+            )
             .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -26,7 +30,10 @@ class SettingsActivity : AppCompatActivity() {
         return when (item?.itemId) {
             android.R.id.home -> {
                 finish()
-                overridePendingTransition(R.anim.fadein, R.anim.slideup)
+                overridePendingTransition(
+                    R.anim.fadein,
+                    R.anim.slideup
+                )
 
                 true
             }
