@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,38 +15,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.adapter.EventsAdapter
 import com.example.danshotspotapp.database.Event
-import com.example.danshotspotapp.database.EventRepository
-import kotlinx.android.synthetic.main.activity_event_create.*
+import com.example.danshotspotapp.model.EventActivityViewModel
 import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.activity_events.menu_todo
 
-//import kotlinx.android.synthetic.main.oldactivity_event.*
 const val GET_NEW_EVENT = 300
 
 class EventActivity : AppCompatActivity() {
     private val events = arrayListOf<Event>()
     private val eventAdapter = EventsAdapter(events)
-    private lateinit var eventRepository: EventRepository
+    private lateinit var viewModel: EventActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
 //        setSupportActionBar(toolbar)
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        eventRepository = EventRepository(this)
         supportActionBar?.title = "event view"
 
+        initViewModel()
         fab.setOnClickListener { view ->
             val intent = Intent(this, EventCreateActivity::class.java)
             startActivityForResult(intent, GET_NEW_EVENT)
-
             overridePendingTransition(
                 R.anim.fadein,
                 R.anim.fadeout
             )
-
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
         }
 
         menu_todo.setOnClickListener {
@@ -81,7 +78,6 @@ class EventActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,9 +86,7 @@ class EventActivity : AppCompatActivity() {
             when (requestCode) {
                 GET_NEW_EVENT -> {
                     val event = data!!.getParcelableExtra<Event>(EVENT_OBJECT)
-                    eventRepository.insertEvent(event)
-                    getEventsFromDatabase()
-
+                    viewModel.insertEvent(event)
                 }
             }
         }
@@ -111,15 +105,19 @@ class EventActivity : AppCompatActivity() {
             )
         )
         createItemTouchHelper().attachToRecyclerView(rvEvent)
-        getEventsFromDatabase()
+    }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
+
+        // Observe reminders from the view model, update the list when the data is changed.
+        viewModel.event.observe(this, Observer { events ->
+            this@EventActivity.events.clear()
+            this@EventActivity.events.addAll(events)
+            eventAdapter.notifyDataSetChanged()
+        })
     }
-    private fun getEventsFromDatabase() {
-        val events = eventRepository.getAllEvents()
-        this@EventActivity.events.clear()
-        this@EventActivity.events.addAll(events)
-        eventAdapter.notifyDataSetChanged()
-    }
+
 
     /**
      * Create a touch helper to recognize when a user swipes an item from a recycler view.
@@ -150,5 +148,4 @@ class EventActivity : AppCompatActivity() {
         }
         return ItemTouchHelper(callback)
     }
-
 }

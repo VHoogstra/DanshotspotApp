@@ -34,7 +34,6 @@ class SettingsActivity : AppCompatActivity() {
                     R.anim.fadein,
                     R.anim.slideup
                 )
-
                 true
             }
             else -> return super.onOptionsItemSelected(item)

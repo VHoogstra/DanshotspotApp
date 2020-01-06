@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.danshotspotapp.R
+import com.example.danshotspotapp.Util
 import com.example.danshotspotapp.database.Event
 import kotlinx.android.synthetic.main.activity_event_create.*
 
@@ -33,7 +34,7 @@ class EventCreateActivity : AppCompatActivity() {
 
     fun onSaveClick() {
         if (etTitle.text.toString().isNotBlank() && tvDate.text.toString().isNotBlank() && etLocation.text.toString().isNotBlank()) {
-            val event = Event(etTitle.text.toString(),tvDate.text.toString(),etLocation.text.toString())
+            val event = Event(etTitle.text.toString(),tvDate.text.toString().toLong(),etLocation.text.toString())
             val resultIntent = Intent()
             resultIntent.putExtra(EVENT_OBJECT, event)
             setResult(Activity.RESULT_OK, resultIntent)
@@ -53,8 +54,9 @@ class EventCreateActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 GET_DATE_PICKER_RESULT -> {
-                    val reminder = data!!.getStringExtra(TIME_DATA)
-                    tvDate.setText(reminder)
+                    val dateMili = data!!.getStringExtra(TIME_DATA)
+                    tvDateShow.setText(Util.getDate(dateMili.toLong(),"d-M-Y kk:mm"))
+                    tvDate.setText(dateMili)
                 }
             }
         }

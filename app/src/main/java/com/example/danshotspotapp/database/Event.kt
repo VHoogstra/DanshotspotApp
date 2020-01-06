@@ -13,7 +13,7 @@ data class Event(
     var title: String,
 
     @ColumnInfo(name = "date")
-    var date: String,
+    var date: Long,
 
     @ColumnInfo(name = "location")
     var location: String,

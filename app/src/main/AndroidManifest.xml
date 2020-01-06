@@ -13,7 +13,7 @@
         <activity
             android:name=".ui.EventShowActivity"
             android:label="@string/title_activity_event_show"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.DateTimePicker"
             android:label="@string/title_date_time_activity"

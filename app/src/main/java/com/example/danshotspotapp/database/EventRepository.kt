@@ -1,6 +1,7 @@
 package com.example.danshotspotapp.database
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 
 public class EventRepository(context: Context) {
 
@@ -11,7 +12,7 @@ public class EventRepository(context: Context) {
         eventDao = eventRoomDatabase!!.eventDao()
     }
 
-    fun getAllEvents(): List<Event> {
+    fun getAllEvents(): LiveData<List<Event>> {
         return eventDao.getAllEvents()
     }
 
