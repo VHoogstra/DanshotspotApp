@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EventActivity">
+    <item
+        android:id="@+id/action_open_settings"
+        android:icon="@drawable/menu"
+        android:title="Delete all"
+        app:showAsAction="ifRoom" />
+
+</menu>
