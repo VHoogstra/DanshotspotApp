@@ -16,11 +16,8 @@ class MainActivity : AppCompatActivity() {
         menu_event.setOnClickListener {
             val intent = Intent(this, EventActivity::class.java)
             startActivity(intent)
-
-        }
-        menu_todo.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            overridePendingTransition(R.anim.slideleft, R.anim.fadeout)
+            finish()
         }
     }
 
@@ -36,8 +33,9 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_open_settings -> {
-                val profileActivityIntent = Intent(this, EventActivity::class.java)
+                val profileActivityIntent = Intent(this, SettingsActivity::class.java)
                 startActivity(profileActivityIntent)
+                overridePendingTransition(R.anim.slidedown, R.anim.fadeout)
                 true
             }
             else -> super.onOptionsItemSelected(item)

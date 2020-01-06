@@ -4,7 +4,7 @@
     tools:context=".EventActivity">
     <item
         android:id="@+id/action_open_settings"
-        android:icon="@drawable/menu"
+        android:icon="@drawable/ic_more_vert_black_24dp"
         android:title="Delete all"
         app:showAsAction="ifRoom" />
 
