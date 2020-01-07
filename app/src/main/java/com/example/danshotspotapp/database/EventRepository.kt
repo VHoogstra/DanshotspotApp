@@ -2,6 +2,7 @@ package com.example.danshotspotapp.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.danshotspotapp.model.Event
 
 public class EventRepository(context: Context) {
 
@@ -16,6 +17,8 @@ public class EventRepository(context: Context) {
         return eventDao.getAllEvents()
     }
 
+
+
     fun insertEvent(reminder: Event) {
         eventDao.insertEvent(reminder)
     }
@@ -26,6 +29,10 @@ public class EventRepository(context: Context) {
 
     fun updateEvent(reminder: Event) {
         eventDao.updateEvent(reminder)
+    }
+
+    fun deleteAll() {
+        eventDao.deleteAll()
     }
 
 }

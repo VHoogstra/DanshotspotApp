@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.Util
-import com.example.danshotspotapp.database.Event
+import com.example.danshotspotapp.model.Event
 import com.example.danshotspotapp.ui.EventShowActivity
 import kotlinx.android.synthetic.main.event_item.view.*
 import android.app.Activity

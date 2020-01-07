@@ -14,10 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.adapter.EventsAdapter
-import com.example.danshotspotapp.database.Event
-import com.example.danshotspotapp.model.EventActivityViewModel
 import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.activity_events.menu_todo
+import android.widget.Toast
+import com.example.danshotspotapp.api.DansRepository
+import com.example.danshotspotapp.model.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 const val GET_NEW_EVENT = 300
 
@@ -34,7 +39,6 @@ class EventActivity : AppCompatActivity() {
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "event view"
 
-        initViewModel()
         fab.setOnClickListener { view ->
             val intent = Intent(this, EventCreateActivity::class.java)
             startActivityForResult(intent, GET_NEW_EVENT)
@@ -53,7 +57,9 @@ class EventActivity : AppCompatActivity() {
             )
             finish()
         }
+        initViewModel()
         initViews()
+        getEvents()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -111,7 +117,7 @@ class EventActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
 
         // Observe reminders from the view model, update the list when the data is changed.
-        viewModel.event.observe(this, Observer { events ->
+        viewModel.events.observe(this, Observer { events ->
             this@EventActivity.events.clear()
             this@EventActivity.events.addAll(events)
             eventAdapter.notifyDataSetChanged()
@@ -148,4 +154,82 @@ class EventActivity : AppCompatActivity() {
         }
         return ItemTouchHelper(callback)
     }
+
+    private fun getEvents() {
+        val apiInterface = DansRepository()
+        val call = apiInterface.getAllEvents()
+
+        onResponse(call)
+//        onResponse2(apiInterface.getEvent())
+    }
+
+    private fun onResponse(response: Call<ApiResponseEvents>) {
+        response.enqueue(object : Callback<ApiResponseEvents> {
+            override fun onResponse(
+                call: Call<ApiResponseEvents>,
+                response: Response<ApiResponseEvents>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(
+                        this@EventActivity, "loading" + response.body()!!.data
+                        , Toast.LENGTH_SHORT
+                    ).show()
+                    viewModel.updateFromDHS(response.body()!!.data)
+
+
+                } else {
+                    println("succesfull")
+                    Toast.makeText(
+                        this@EventActivity, "loading" + response.errorBody().toString()
+                        , Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+
+            override fun onFailure(call: Call<ApiResponseEvents>, t: Throwable) {
+                println("succesfull")
+                Toast.makeText(
+                    this@EventActivity, "nooooooo"
+                    , Toast.LENGTH_SHORT
+                ).show()
+
+//                error.value = errorMessage
+//                loading.value = false
+//                getTasksOffline()
+            }
+        })
+    }
+
+    private fun onResponse2(response: Call<ApiResponseEvent>) {
+        response.enqueue(object : Callback<ApiResponseEvent> {
+            override fun onResponse(
+                call: Call<ApiResponseEvent>,
+                response: Response<ApiResponseEvent>
+            ) {
+                if (response.isSuccessful) {
+                    println("succesfull")
+                    Toast.makeText(
+                        this@EventActivity, "loading" + response.body()!!.data.title
+                        , Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    println("ssdf")
+                    Toast.makeText(
+                        this@EventActivity, "loading" + response.errorBody().toString()
+                        , Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponseEvent>, t: Throwable) {
+                println("failed ssdf")
+
+//                error.value = errorMessage
+//                loading.value = false
+//                getTasksOffline()
+            }
+        })
+    }
+
 }

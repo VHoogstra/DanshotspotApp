@@ -2,6 +2,7 @@ package com.example.danshotspotapp.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.danshotspotapp.model.Event
 
 @Dao
 interface EventDao {
@@ -17,5 +18,8 @@ interface EventDao {
 
     @Update
     fun updateEvent(event: Event)
+
+    @Query("DELETE FROM eventTable where 1")
+    fun deleteAll()
 
 }

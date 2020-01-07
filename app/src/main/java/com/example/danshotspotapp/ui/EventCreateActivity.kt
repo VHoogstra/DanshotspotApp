@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.Util
-import com.example.danshotspotapp.database.Event
+import com.example.danshotspotapp.model.Event
 import kotlinx.android.synthetic.main.activity_event_create.*
 
 const val GET_DATE_PICKER_RESULT = 100
@@ -34,7 +34,11 @@ class EventCreateActivity : AppCompatActivity() {
 
     fun onSaveClick() {
         if (etTitle.text.toString().isNotBlank() && tvDate.text.toString().isNotBlank() && etLocation.text.toString().isNotBlank()) {
-            val event = Event(etTitle.text.toString(),tvDate.text.toString().toLong(),etLocation.text.toString())
+            val event = Event(
+                etTitle.text.toString(),
+                tvDate.text.toString().toLong(),
+                etLocation.text.toString()
+            )
             val resultIntent = Intent()
             resultIntent.putExtra(EVENT_OBJECT, event)
             setResult(Activity.RESULT_OK, resultIntent)
