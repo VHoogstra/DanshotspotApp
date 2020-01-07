@@ -14,7 +14,7 @@ import android.app.Activity
 import com.example.danshotspotapp.ui.EVENT_OBJECT
 
 
-class EventsAdapter(private val Events: List<Event>) :
+class EventsAdapter(private val Events: List<Event>, private val onClick: (Event) -> Unit) :
     RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -45,17 +45,10 @@ class EventsAdapter(private val Events: List<Event>) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
+        init {
+            itemView.setOnClickListener { onClick(Events[adapterPosition]) }
+        }
         fun bind(event: Event) {
-            itemView.setOnClickListener {
-                val activity = context as Activity
-                val showIntent = Intent(context, EventShowActivity::class.java)
-                showIntent.putExtra(EVENT_OBJECT,event)
-                activity.startActivity(showIntent)
-                activity.overridePendingTransition(
-                    R.anim.slidedown,
-                    R.anim.fadeout
-                )
-            }
             itemView.tvDateShow.text = event.title
             itemView.tvEvent.text = Util.getDate(event.date, "d-M-Y kk:mm")
             itemView.tvTodo.text = "111"

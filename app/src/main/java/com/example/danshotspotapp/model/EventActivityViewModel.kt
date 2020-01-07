@@ -1,12 +1,17 @@
 package com.example.danshotspotapp.model
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.example.danshotspotapp.api.DansRepository
 import com.example.danshotspotapp.database.EventRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class EventActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -27,11 +32,32 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun updateFromDHS(DhsEvents: List<Event>) {
-        eventRepository.deleteAll()
-        for(event in DhsEvents){
-            this.insertEvent(event)
-        }
+    fun updateFromDHS() {
+        val apiInterface = DansRepository()
+        val call = apiInterface.getAllEvents()
+        this.onResponse(call)
 
+    }
+
+    private fun onResponse(response: Call<ApiResponseEvents>) {
+        response.enqueue(object : Callback<ApiResponseEvents> {
+            override fun onResponse(
+                call: Call<ApiResponseEvents>,
+                response: Response<ApiResponseEvents>
+            ) {
+                if (response.isSuccessful) {
+                    eventRepository.deleteAll()
+                    for (event in response.body()!!.data) {
+                        this@EventActivityViewModel.insertEvent(event)
+                    }
+                } else {
+
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponseEvents>, t: Throwable) {
+
+            }
+        })
     }
 }
