@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.Util
-import com.example.danshotspotapp.model.Event
+import com.example.danshotspotapp.database.Event.Event
 import kotlinx.android.synthetic.main.activity_event_create.*
 
 const val GET_DATE_PICKER_RESULT = 100

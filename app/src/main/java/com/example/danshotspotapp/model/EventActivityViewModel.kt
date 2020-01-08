@@ -1,11 +1,12 @@
 package com.example.danshotspotapp.model
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.example.danshotspotapp.api.ApiResponseEvents
 import com.example.danshotspotapp.api.DansRepository
-import com.example.danshotspotapp.database.EventRepository
+import com.example.danshotspotapp.database.Event.Event
+import com.example.danshotspotapp.database.Event.EventRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import retrofit2.Response
 class EventActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
-    private val eventRepository = EventRepository(application.applicationContext)
+    private val eventRepository =
+        EventRepository(application.applicationContext)
 
     val events: LiveData<List<Event>> = eventRepository.getAllEvents()
     fun insertEvent(event: Event) {
@@ -29,6 +31,11 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
     fun deleteEvent(event: Event) {
         ioScope.launch {
             eventRepository.delteEvent(event)
+        }
+
+    }fun deleteAll() {
+        ioScope.launch {
+            eventRepository.deleteAll()
         }
     }
 
@@ -46,7 +53,7 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
                 response: Response<ApiResponseEvents>
             ) {
                 if (response.isSuccessful) {
-                    eventRepository.deleteAll()
+                    this@EventActivityViewModel.deleteAll()
                     for (event in response.body()!!.data) {
                         this@EventActivityViewModel.insertEvent(event)
                     }
@@ -54,7 +61,6 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
 
                 }
             }
-
             override fun onFailure(call: Call<ApiResponseEvents>, t: Throwable) {
 
             }

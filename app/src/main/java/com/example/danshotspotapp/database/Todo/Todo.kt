@@ -1,28 +1,39 @@
-package com.example.danshotspotapp.model
+package com.example.danshotspotapp.database.Todo
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+
 @Parcelize
-@Entity(tableName = "eventTable")
-data class Event(
-    @SerializedName("name")
+@Entity(tableName = "todo")
+data class Todo(
+    @SerializedName("title")
     @ColumnInfo(name = "title")
     var title: String,
+
+    @SerializedName("note")
+    @ColumnInfo(name = "note")
+    var note: String,
 
     @SerializedName("date")
     @ColumnInfo(name = "date")
     var date: Long,
 
-    @SerializedName("location")
-    @ColumnInfo(name = "location")
-    var location: String,
+    @SerializedName("status")
+    @ColumnInfo(name = "status")
+    var status: Int,
+
+    @SerializedName("status_done")
+    @ColumnInfo(name = "status_done")
+    var status_done: Long,
+
+    @SerializedName("event_id")
+    @ColumnInfo(name = "event_id")
+    var event_id: Long?,
 
     @SerializedName("id")
     @ColumnInfo(name = "dhs_id")
@@ -32,4 +43,5 @@ data class Event(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long? = null
+
 ) : Parcelable

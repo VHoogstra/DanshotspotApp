@@ -16,12 +16,8 @@ import com.example.danshotspotapp.R
 import com.example.danshotspotapp.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.activity_events.menu_todo
-import android.widget.Toast
-import com.example.danshotspotapp.api.DansRepository
+import com.example.danshotspotapp.database.Event.Event
 import com.example.danshotspotapp.model.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 const val GET_NEW_EVENT = 300
@@ -31,16 +27,6 @@ class EventActivity : AppCompatActivity() {
     private val eventAdapter = EventsAdapter(events, { event -> onEventClick(event) })
     private lateinit var viewModel: EventActivityViewModel
 
-    private fun onEventClick(event:Event) {
-        val activity = this as Activity
-        val showIntent = Intent(this, EventShowActivity::class.java)
-        showIntent.putExtra(EVENT_OBJECT,event)
-        activity.startActivity(showIntent)
-        activity.overridePendingTransition(
-            R.anim.slidedown,
-            R.anim.fadeout
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +53,7 @@ class EventActivity : AppCompatActivity() {
         initViewModel()
         initViews()
         getEvents()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -162,5 +149,15 @@ class EventActivity : AppCompatActivity() {
 
     private fun getEvents() {
         viewModel.updateFromDHS()
+    } private fun onEventClick(event: Event) {
+        val activity = this as Activity
+        val showIntent = Intent(this, EventShowActivity::class.java)
+        showIntent.putExtra(EVENT_OBJECT,event)
+        activity.startActivity(showIntent)
+        activity.overridePendingTransition(
+            R.anim.slidedown,
+            R.anim.fadeout
+        )
     }
+
 }

@@ -1,8 +1,7 @@
-package com.example.danshotspotapp.database
+package com.example.danshotspotapp.database.Event
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.danshotspotapp.model.Event
 
 @Dao
 interface EventDao {

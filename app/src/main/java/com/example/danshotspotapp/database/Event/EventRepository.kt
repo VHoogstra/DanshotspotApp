@@ -1,22 +1,23 @@
-package com.example.danshotspotapp.database
+package com.example.danshotspotapp.database.Event
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.danshotspotapp.model.Event
 
 public class EventRepository(context: Context) {
 
     private var eventDao: EventDao
 
     init {
-        val eventRoomDatabase = eventRoomDatabase.getDatabase(context)
+        val eventRoomDatabase =
+            eventRoomDatabase.getDatabase(
+                context
+            )
         eventDao = eventRoomDatabase!!.eventDao()
     }
 
     fun getAllEvents(): LiveData<List<Event>> {
         return eventDao.getAllEvents()
     }
-
 
 
     fun insertEvent(reminder: Event) {
@@ -34,5 +35,4 @@ public class EventRepository(context: Context) {
     fun deleteAll() {
         eventDao.deleteAll()
     }
-
 }

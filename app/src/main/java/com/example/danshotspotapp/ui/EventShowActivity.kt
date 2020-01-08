@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.Util
-import com.example.danshotspotapp.model.Event
+import com.example.danshotspotapp.database.Event.Event
 import kotlinx.android.synthetic.main.activity_event_show.*
 
 

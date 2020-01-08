@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.danshotspotapp.R
 import com.example.danshotspotapp.Util
 import com.example.danshotspotapp.database.Event.Event
+import com.example.danshotspotapp.database.Todo.Todo
 import kotlinx.android.synthetic.main.event_item.view.*
 
 
-class EventsAdapter(private val Events: List<Event>, private val onClick: (Event) -> Unit) :
-    RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
+class TodoAdapter(private val Todos: List<Todo>, private val onClick: (Todo) -> Unit) :
+    RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(Events[position])
+        holder.bind(Todos[position])
     }
 
 
@@ -35,16 +36,16 @@ class EventsAdapter(private val Events: List<Event>, private val onClick: (Event
      * Returns the size of the list
      */
     override fun getItemCount(): Int {
-        return Events.size
+        return Todos.size
 
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
         init {
-            itemView.setOnClickListener { onClick(Events[adapterPosition]) }
+            itemView.setOnClickListener { onClick(Todos[adapterPosition]) }
         }
-        fun bind(event: Event) {
+        fun bind(event: Todo) {
             itemView.tvDateShow.text = event.title
             itemView.tvEvent.text = Util.getDate(event.date, "d-M-Y kk:mm")
             itemView.tvTodo.text = "111"

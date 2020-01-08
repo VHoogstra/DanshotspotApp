@@ -1,10 +1,9 @@
-package com.example.danshotspotapp.database
+package com.example.danshotspotapp.database.Event
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.danshotspotapp.model.Event
 
 @Database(entities = [Event::class], version = 1, exportSchema = false)
 abstract class eventRoomDatabase : RoomDatabase(){
@@ -23,7 +22,8 @@ abstract class eventRoomDatabase : RoomDatabase(){
                     if (reminderRoomDatabaseInstance == null) {
                         reminderRoomDatabaseInstance = Room.databaseBuilder(
                             context.applicationContext,
-                            eventRoomDatabase::class.java, DATABASE_NAME
+                            eventRoomDatabase::class.java,
+                            DATABASE_NAME
                         )
                             .allowMainThreadQueries()
                             .build()
